@@ -1,0 +1,8 @@
+adss
+astropy
+jupyterlab
+matplotlib
+numpy
+pandas
+Pillow
+scipy
