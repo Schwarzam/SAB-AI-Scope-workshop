@@ -62,7 +62,7 @@ You may print the database metadata to see what is available:
 ```python
 metadata = cl.get_database_metadata()
 
-cl.pretty_print_metadata()
+cl.pretty_print_db_metadata(metadata)
 ```
 
 
@@ -162,7 +162,7 @@ query = cl.query_and_wait(
 ADSS also supports downloading images, cutouts, colored images. These are handled as Collections. You can list the available file collections in the database metadata:
 
 ```python
-cl.get_image_collections()
+cl.get_collections()
 ```
 
 ```bash

@@ -15,5 +15,5 @@ As consultas e os produtos de imagem exigem acesso à instância AI-Scope e
 credenciais válidas. A cobertura de DESI e os alertas disponíveis podem mudar.
 
 As referências locais da API e da linguagem de consulta estão em
-[`docs/python_api.md`](docs/python_api.md) e
-[`docs/query_examples.md`](docs/query_examples.md).
+[`ai-scope_docs/python_api.md`](ai-scope_docs/python_api.md) e
+[`ai-scope_docs/query_examples.md`](ai-scope_docs/query_examples.md).
