@@ -14,6 +14,10 @@ um replay finito de alertas.
 As consultas e os produtos de imagem exigem acesso à instância AI-Scope e
 credenciais válidas. A cobertura de DESI e os alertas disponíveis podem mudar.
 
+As células de consulta AstroQL são exercícios: escreva a consulta indicada no
+enunciado antes de executar a célula. As soluções estão em
+[`notebooks/outputs/respostas.txt`](notebooks/outputs/respostas.txt).
+
 As referências locais da API e da linguagem de consulta estão em
 [`ai-scope_docs/python_api.md`](ai-scope_docs/python_api.md) e
 [`ai-scope_docs/query_examples.md`](ai-scope_docs/query_examples.md).

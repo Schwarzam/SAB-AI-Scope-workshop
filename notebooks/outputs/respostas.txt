@@ -1,0 +1,145 @@
+Respostas das consultas AstroQL — notebooks 00–05
+Execute os notebooks a partir da pasta notebooks/.
+As soluções abaixo correspondem às células com query = None.
+
+00 · Gaia perto de NGC 1365
+===========================
+
+query = """
+SELECT
+    source_id, ra, dec,
+    phot_g_mean_mag, phot_bp_mean_mag, phot_rp_mean_mag
+FROM public.gaia_dr3
+WHERE cone(ra, dec, 53.4017, -36.1402, 0.1)
+"""
+
+01 · Gaia DR3 ao redor de M2
+============================
+
+query = f"""
+SELECT TOP 50000
+    source_id, ra, dec,
+    dist(ra, dec, {CENTER_RA}, {CENTER_DEC}) AS radius_deg,
+    parallax, parallax_error,
+    pmra, pmdec, pmra_error, pmdec_error,
+    phot_g_mean_mag, phot_bp_mean_mag, phot_rp_mean_mag,
+    bp_rp, ruwe
+FROM public.gaia_dr3
+WHERE cone(ra, dec, {CENTER_RA}, {CENTER_DEC}, {RADIUS_DEG})
+  AND pmra IS NOT NULL
+  AND pmdec IS NOT NULL
+  AND phot_g_mean_mag IS NOT NULL
+  AND phot_bp_mean_mag IS NOT NULL
+  AND phot_rp_mean_mag IS NOT NULL
+  AND phot_g_mean_mag < 19
+"""
+
+02 · Crossmatch Gaia–DESI redshift
+==================================
+
+query = """
+SELECT
+    u.source_id AS input_source_id,
+    u.ra AS input_ra,
+    u.dec AS input_dec,
+    d.id AS desi_id,
+    d.ra AS desi_ra,
+    d.dec AS desi_dec,
+    d.z,
+    d.zerr,
+    d.zwarn,
+    d.spectype,
+    d.subtype,
+    d.deltachi2,
+    dist(u.ra, u.dec, d.ra, d.dec) AS separation_deg
+FROM upload.targets AS u
+JOIN desi.desi_specz_dr1 AS d
+  ON cone(d.ra, d.dec, u.ra, u.dec, 0.0003)
+"""
+
+02 · Espectros DESI B/R/Z
+=========================
+
+spectra_query = """
+SELECT
+    u.desi_id,
+    s.wave_b, s.flux_b, s.ivar_b,
+    s.wave_r, s.flux_r, s.ivar_r,
+    s.wave_z, s.flux_z, s.ivar_z
+FROM upload.desitargets AS u
+JOIN desi.desi_dr1 AS s ON s.targetid = u.desi_id
+"""
+
+03 · Crossmatch Gaia–ZTF
+========================
+
+query = f"""
+SELECT 
+    u.source_id AS input_source_id,
+    u.ra AS input_ra,
+    u.dec AS input_dec,
+    d.*,
+    dist(u.ra, u.dec, d.ra, d.dec) AS sep
+FROM upload.targets AS u
+JOIN public.ztf_dr22 AS d
+ON cone(d.ra, d.dec, u.ra, u.dec, 0.0002)
+"""
+
+05 · Amostra Gaia no polígono
+=============================
+
+gaia_query = f"""
+SELECT TOP {MAX_OBJECTS}
+    source_id, ra, dec, phot_g_mean_mag, phot_bp_mean_mag, phot_rp_mean_mag,
+    parallax, parallax_error, pmra, pmdec, ruwe,
+    dist(ra, dec, {RA0}, {DEC0}) AS image_distance_deg
+FROM public.gaia_dr3
+WHERE polygon(
+    ra, dec,
+    {POLYGON_RA_WEST}, {POLYGON_DEC_SOUTH},
+    {POLYGON_RA_EAST}, {POLYGON_DEC_SOUTH},
+    {POLYGON_RA_EAST}, {POLYGON_DEC_NORTH},
+    {POLYGON_RA_WEST}, {POLYGON_DEC_NORTH}
+)
+  AND phot_g_mean_mag IS NOT NULL
+ORDER BY image_distance_deg
+"""
+
+05 · Crossmatch Gaia–DESI
+=========================
+
+desi_query = f"""
+SELECT
+    u.object_id, d.id AS desi_id, d.ra AS desi_ra, d.dec AS desi_dec,
+    d.z, d.zerr, d.zwarn, d.spectype, d.subtype, d.deltachi2,
+    dist(u.ra, u.dec, d.ra, d.dec) AS desi_sep_deg
+FROM upload.objects AS u
+JOIN desi.desi_specz_dr1 AS d
+  ON cone(d.ra, d.dec, u.ra, u.dec, {MATCH_RADIUS_ARCSEC / 3600.0})
+"""
+
+05 · Espectros DESI
+===================
+
+desi_spectra_query = """
+SELECT
+    u.desi_id,
+    s.wave_b, s.flux_b, s.ivar_b,
+    s.wave_r, s.flux_r, s.ivar_r,
+    s.wave_z, s.flux_z, s.ivar_z
+FROM upload.desitargets AS u
+JOIN desi.desi_dr1 AS s ON u.desi_id = s.targetid
+"""
+
+05 · Crossmatch Gaia–ZTF
+========================
+
+ztf_query = f"""
+SELECT
+    u.object_id, z.id AS ztf_id, z.ra AS ztf_ra, z.dec AS ztf_dec,
+    z.filterid, z.nepochs, z.hmjd, z.mag, z.magerr,
+    dist(u.ra, u.dec, z.ra, z.dec) AS ztf_sep_deg
+FROM upload.objects AS u
+JOIN public.ztf_dr22 AS z
+  ON cone(z.ra, z.dec, u.ra, u.dec, {MATCH_RADIUS_ARCSEC / 3600.0})
+"""

@@ -1,2 +1,3 @@
-notebooks/outputs
+notebooks/outputs/*
+!notebooks/outputs/respostas.txt
 .DS_Store
