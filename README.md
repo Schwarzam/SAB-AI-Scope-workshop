@@ -2,19 +2,34 @@
 
 This repository contains materials for the SAB-AI-Scope workshop. The workshop is focused on introducing AI-Scope, an astronomical data platform designed to facilitate not only but especially machine learning and deep learning workflows in astronomy. The materials include presentations, documentation, and resources related to AI-Scope's features and capabilities.
 
-## Preparação
-
-Execute os notebooks na ordem `00`–`06`. O notebook `01` produz
-`notebooks/outputs/cluster_1.csv`, usado por `02` e `03`. O notebook `04`
-explora imagens; o `05` cruza Gaia, DESI e ZTF, salva até 20 fontes com cutout
-S-PLUS em `notebooks/outputs/multimodal_dataset.pkl` e permite visualizar cada
-linha com `plot_object(idx)`. O `05_bonus_foundation_model.ipynb` lê essa tabela
-e mostra um treino multimodal didático com PyTorch. O `06` demonstra
-um replay finito de alertas.
-As consultas e os produtos de imagem exigem acesso à instância AI-Scope e
-credenciais válidas. A cobertura de DESI e os alertas disponíveis podem mudar.
-
-
 As referências locais da API e da linguagem de consulta estão em
 [`ai-scope_docs/python_api.md`](ai-scope_docs/python_api.md) e
 [`ai-scope_docs/query_examples.md`](ai-scope_docs/query_examples.md).
+
+Para execucao remota, use o Google Colab:
+
+Notebook 00 - 
+https://colab.research.google.com/github/Schwarzam/SAB-AI-Scope-workshop/blob/main/notebooks/00_platform_discovery.ipynb
+
+Notebook 01 - 
+https://colab.research.google.com/github/Schwarzam/SAB-AI-Scope-workshop/blob/main/notebooks/01_gaia_phase_space_discovery.ipynb
+
+Notebook 02 - 
+https://colab.research.google.com/github/Schwarzam/SAB-AI-Scope-workshop/blob/main/notebooks/02_upload_crossmatch_desi.ipynb
+
+Notebook 03 - 
+https://colab.research.google.com/github/Schwarzam/SAB-AI-Scope-workshop/blob/main/notebooks/03_ztf_variability_lab.ipynb
+
+Notebook 04 - 
+https://colab.research.google.com/github/Schwarzam/SAB-AI-Scope-workshop/blob/main/notebooks/04_images_as_data.ipynb
+
+Notebook 05 - 
+https://colab.research.google.com/github/Schwarzam/SAB-AI-Scope-workshop/blob/main/notebooks/05_multimodal_dataset.ipynb
+
+Notebook 06 - 
+https://colab.research.google.com/github/Schwarzam/SAB-AI-Scope-workshop/blob/main/notebooks/06_live_alerts.ipynb
+
+
+
+Cluster 1 file:
+https://ai-scope.cbpf.br/files/cluster_1.csv
